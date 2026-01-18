@@ -96,9 +96,6 @@ WITH_LINEAGE_CHARGER := false
 # Graphics
 OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
 
-# Extended Filesystem Support
-TARGET_EXFAT_DRIVER := sdfat
-
 # Filesystem
 TARGET_FS_CONFIG_GEN := $(PLATFORM_PATH)/config.fs
 
