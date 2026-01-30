@@ -154,11 +154,6 @@ PRODUCT_PACKAGES += \
     android.hardware.keymaster@3.0-service \
     android.hardware.gatekeeper@1.0-service.software
 
-# IPv6 tethering
-PRODUCT_PACKAGES += \
-    ebtables \
-    ethertypes
-
 # Lights
 PRODUCT_PACKAGES += \
     android.hardware.light@2.0-service.htc_msm8960 \
