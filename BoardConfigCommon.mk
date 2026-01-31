@@ -85,9 +85,6 @@ TARGET_PROCESS_SDK_VERSION_OVERRIDE := \
 # Charge mode
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/htc_lpm/lpm_mode
 
-# Graphics
-OVERRIDE_RS_DRIVER := libRSDriver_adreno.so
-
 # Filesystem
 TARGET_FS_CONFIG_GEN := $(PLATFORM_PATH)/config.fs
 
