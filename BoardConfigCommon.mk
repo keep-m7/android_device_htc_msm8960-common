@@ -74,13 +74,13 @@ TARGET_USES_NON_TREBLE_CAMERA := true
 TARGET_SPECIFIC_CAMERA_PARAMETER_LIBRARY := camera_parameters_htc_msm8960
 
 TARGET_PROCESS_SDK_VERSION_OVERRIDE := \
-    /system/bin/mm-qcamera-daemon=21 \
-    /system/bin/qseecomd=21 \
-    /system/vendor/bin/hw/android.hardware.sensors@1.0-service.htc8960=21 \
-    /system/vendor/bin/hw/android.hardware.media.omx@1.0-service=21 \
+    /system/bin/mm-qcamera-daemon=22 \
+    /system/bin/qseecomd=22 \
+    /system/vendor/bin/hw/android.hardware.sensors@1.0-service.htc8960=22 \
+    /system/vendor/bin/hw/android.hardware.media.omx@1.0-service=22 \
     /system/vendor/bin/hw/rild=27 \
-    /system/bin/audioserver=21 \
-    /system/bin/mediaserver=21
+    /system/bin/audioserver=22 \
+    /system/bin/mediaserver=22
 
 # Charge mode
 BOARD_CHARGING_MODE_BOOTING_LPM := /sys/htc_lpm/lpm_mode
