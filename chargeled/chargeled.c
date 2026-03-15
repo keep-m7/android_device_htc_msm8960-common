@@ -18,6 +18,7 @@
 #define KLOG_LEVEL 6
 
 #include <errno.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -90,12 +91,14 @@ static int get_charging_status() {
         if (fgets(batt_stat_str, STR_BUF_SIZE, bstat) == NULL) {
             KLOG_ERROR(LOG_TAG, "%s: failed to read %s; errno=%s\n",
                 __func__, BATTERY_STATUS_FILE, strerror(errno));
+            fclose(bstat);
             return -(errno);
         }
 
         if (!strcmp(batt_stat_str, "")) {
             KLOG_ERROR(LOG_TAG, "%s: empty battery status file %s\n",
                 __func__, BATTERY_STATUS_FILE);
+            fclose(bstat);
             return 0;
         }
 
