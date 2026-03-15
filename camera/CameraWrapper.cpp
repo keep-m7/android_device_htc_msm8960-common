@@ -421,7 +421,7 @@ static int camera_store_meta_data_in_buffers(struct camera_device *device,
 static int camera_start_recording(struct camera_device *device)
 {
     if (!device)
-        return EINVAL;
+        return -EINVAL;
 
     ALOGV("%s->%08X->%08X", __FUNCTION__, (uintptr_t)device,
             (uintptr_t)(((wrapper_camera_device_t*)device)->vendor));
@@ -516,11 +516,8 @@ static int camera_set_parameters(struct camera_device *device,
     ALOGV("%s->%08X->%08X", __FUNCTION__, (uintptr_t)device,
             (uintptr_t)(((wrapper_camera_device_t*)device)->vendor));
 
-    char *tmp = NULL;
-    tmp = camera_fixup_setparams(CAMERA_ID(device), params);
-
-    int ret = VENDOR_CALL(device, set_parameters, tmp);
-    return ret;
+    return VENDOR_CALL(device, set_parameters,
+            camera_fixup_setparams(CAMERA_ID(device), params));
 }
 
 static char *camera_get_parameters(struct camera_device *device)
@@ -600,6 +597,8 @@ static int camera_device_close(hw_device_t *device)
         if (fixed_set_params[i])
             free(fixed_set_params[i]);
     }
+    free(fixed_set_params);
+    fixed_set_params = NULL;
 
     wrapper_dev = (wrapper_camera_device_t*) device;
 
@@ -652,7 +651,7 @@ static int camera_device_open(const hw_module_t *module, const char *name,
         }
         memset(fixed_set_params, 0, sizeof(char *) * num_cameras);
 
-        if (cameraid > num_cameras) {
+        if (cameraid >= num_cameras) {
             ALOGE("camera service provided cameraid out of bounds, "
                     "cameraid = %d, num supported = %d",
                     cameraid, num_cameras);
