@@ -601,12 +601,12 @@ static void parseSizesList(const char *sizesStr, Vector<Size> &sizes)
         return;
     }
 
-    char *sizeStartPtr = (char *)sizesStr;
+    const char *sizeStartPtr = sizesStr;
 
     while (true) {
         int width, height;
         int success = parse_pair(sizeStartPtr, &width, &height, 'x',
-                                 &sizeStartPtr);
+                                 (char **)&sizeStartPtr);
         if (success == -1 || (*sizeStartPtr != ',' && *sizeStartPtr != '\0')) {
             ALOGE("Picture sizes string \"%s\" contains invalid character.", sizesStr);
             return;
@@ -747,13 +747,13 @@ status_t CameraParameters::dump(int fd, const Vector<String16>& /*args*/) const
     const size_t SIZE = 256;
     char buffer[SIZE];
     String8 result;
-    snprintf(buffer, 255, "CameraParameters::dump: mMap.size = %zu\n", mMap.size());
+    snprintf(buffer, sizeof(buffer), "CameraParameters::dump: mMap.size = %zu\n", mMap.size());
     result.append(buffer);
     for (size_t i = 0; i < mMap.size(); i++) {
         String8 k, v;
         k = mMap.keyAt(i);
         v = mMap.valueAt(i);
-        snprintf(buffer, 255, "\t%s: %s\n", k.string(), v.string());
+        snprintf(buffer, sizeof(buffer), "\t%s: %s\n", k.string(), v.string());
         result.append(buffer);
     }
     write(fd, result.string(), result.size());
