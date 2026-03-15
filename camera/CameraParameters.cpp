@@ -330,7 +330,7 @@ const char CameraParameters::LIGHTFX_HDR[] = "high-dynamic-range";
 
 static const char* portrait = "portrait"; 
 static const char* landscape = "landscape"; 
-static int parse_pair(const char *str, int *first, int *second, char delim, char **endptr); 
+static int parse_pair(const char *str, int *first, int *second, char delim, const char **endptr); 
 static void parseSizesList(const char *sizesStr, Vector<Size> &sizes); 
 static int parseNDimVector(const char *str, int *num, int N, char delim = ',') 
 { 
@@ -571,7 +571,7 @@ void CameraParameters::remove(const char *key)
 
 // Parse string like "640x480" or "10000,20000"
 static int parse_pair(const char *str, int *first, int *second, char delim,
-                      char **endptr = NULL)
+                      const char **endptr = NULL)
 {
     // Find the first integer.
     char *end;
@@ -606,7 +606,7 @@ static void parseSizesList(const char *sizesStr, Vector<Size> &sizes)
     while (true) {
         int width, height;
         int success = parse_pair(sizeStartPtr, &width, &height, 'x',
-                                 (char **)&sizeStartPtr);
+                                 &sizeStartPtr);
         if (success == -1 || (*sizeStartPtr != ',' && *sizeStartPtr != '\0')) {
             ALOGE("Picture sizes string \"%s\" contains invalid character.", sizesStr);
             return;
