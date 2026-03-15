@@ -1,0 +1,49 @@
+From 820bc0048137e44f6e52cf7075fa3bb6fe2f4166 Mon Sep 17 00:00:00 2001
+From: jmpfbmx <jmpf.bmx@gmail.com>
+Date: Sun, 15 Mar 2026 23:13:52 +0100
+Subject: [PATCH] frameworks: av: libcameraservice: Guard callbacks against
+ null
+
+Change-Id: I20d76033e2e5bb5f0ffe2a19c1736df3aa845eb1
+Signed-off-by: jmpfbmx <jmpf.bmx@gmail.com>
+---
+ .../libcameraservice/device1/CameraHardwareInterface.cpp | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/services/camera/libcameraservice/device1/CameraHardwareInterface.cpp b/services/camera/libcameraservice/device1/CameraHardwareInterface.cpp
+index 61cada6..6824b39 100644
+--- a/services/camera/libcameraservice/device1/CameraHardwareInterface.cpp
++++ b/services/camera/libcameraservice/device1/CameraHardwareInterface.cpp
+@@ -777,7 +777,8 @@ void CameraHardwareInterface::sNotifyCb(int32_t msg_type, int32_t ext1,
+     ALOGV("%s", __FUNCTION__);
+     CameraHardwareInterface *object =
+             static_cast<CameraHardwareInterface *>(user);
+-    object->mNotifyCb(msg_type, ext1, ext2, object->mCbUser);
++    if (object->mNotifyCb)
++        object->mNotifyCb(msg_type, ext1, ext2, object->mCbUser);
+ }
+ 
+ void CameraHardwareInterface::sDataCb(int32_t msg_type,
+@@ -794,7 +795,8 @@ void CameraHardwareInterface::sDataCb(int32_t msg_type,
+              index, mem->mNumBufs);
+         return;
+     }
+-    object->mDataCb(msg_type, mem->mBuffers[index], metadata, object->mCbUser);
++    if (object->mDataCb)
++        object->mDataCb(msg_type, mem->mBuffers[index], metadata, object->mCbUser);
+ }
+ 
+ void CameraHardwareInterface::sDataCbTimestamp(nsecs_t timestamp, int32_t msg_type,
+@@ -813,7 +815,8 @@ void CameraHardwareInterface::sDataCbTimestamp(nsecs_t timestamp, int32_t msg_ty
+              index, mem->mNumBufs);
+         return;
+     }
+-    object->mDataCbTimestamp(timestamp, msg_type, mem->mBuffers[index], object->mCbUser);
++    if (object->mDataCbTimestamp)
++        object->mDataCbTimestamp(timestamp, msg_type, mem->mBuffers[index], object->mCbUser);
+ }
+ 
+ camera_memory_t* CameraHardwareInterface::sGetMemory(
+-- 
+2.53.0
+
