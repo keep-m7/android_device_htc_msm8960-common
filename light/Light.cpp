@@ -251,12 +251,12 @@ void Light::setSpeakerLightLockedDual(const LightState& batteryState,
         case LED_AMBER:
             mAmberBlink << 1 << std::endl;
             mGreenLed << 1 << std::endl;
-            mAmberBlink << 4 << std::endl;
+            mAmberBlink << blinkMode << std::endl;
             break;
         case LED_GREEN:
             mGreenBlink << 1 << std::endl;
             mAmberLed << 1 << std::endl;
-            mGreenBlink << 4 << std::endl;
+            mGreenBlink << blinkMode << std::endl;
             break;
         default:
             break;
