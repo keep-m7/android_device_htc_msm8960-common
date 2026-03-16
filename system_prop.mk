@@ -51,6 +51,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.input.noresample=1
 
+# Logs
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.log.tag.wificond=S
+
 # Media
 PRODUCT_PROPERTY_OVERRIDES += \
     debug.stagefright.ccodec=0 \
