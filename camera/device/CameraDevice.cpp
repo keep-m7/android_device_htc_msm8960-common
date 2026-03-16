@@ -124,7 +124,7 @@ void CameraDevice::setConnectionStatus(bool connected) {
         return;
     }
     if (!connected) {
-        ALOGW("%s: camera %s is disconneted. Closing", __FUNCTION__, mCameraId.c_str());
+        ALOGW("%s: camera %s is disconnected. Closing", __FUNCTION__, mCameraId.c_str());
         closeLocked();
     }
     return;
@@ -361,6 +361,7 @@ camera_memory_t* CameraDevice::sGetMemory(int fd, size_t buf_size, uint_t num_bu
         object->mMemoryMap[id] = mem;
     }
     mem->handle.mDevice = object;
+    native_handle_close(handle);
     native_handle_delete(handle);
     return &mem->handle;
 }
@@ -373,6 +374,7 @@ void CameraDevice::sPutMemory(camera_memory_t *data) {
     CameraDevice* device = mem->handle.mDevice;
     if (device == nullptr) {
         ALOGE("%s: camera HAL return memory for a null device!", __FUNCTION__);
+        return;
     }
     if (device->mDeviceCallback == nullptr) {
         ALOGE("%s: camera HAL return memory while camera is not opened!", __FUNCTION__);
@@ -866,10 +868,12 @@ void CameraDevice::releaseRecordingFrameLocked(
             }
         }
         VideoNativeHandleMetadata* md = (VideoNativeHandleMetadata*) data;
-        native_handle_t* nh = md->pHandle;
+        native_handle_t* nh = handle ? md->pHandle : nullptr;
         mDevice->ops->release_recording_frame(mDevice, data);
-        native_handle_close(nh);
-        native_handle_delete(nh);
+        if (nh) {
+            native_handle_close(nh);
+            native_handle_delete(nh);
+        }
     }
 }
 
